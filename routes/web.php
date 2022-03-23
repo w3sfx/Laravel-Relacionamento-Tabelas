@@ -3,9 +3,45 @@
 use App\Models\{
     User,
     Preference,
-    Course
+    Course,
+    Permission
 };
 use Illuminate\Support\Facades\Route;
+
+Route::get('/many-to-many-pivot', function() {
+    $user = User::with('permissions')->find(1);
+    // $user->permissions()->attach([
+    //     2 => ['active' => false],
+    //     3 => ['active' => false],
+    // ]);
+
+
+    echo "<b>{$user->name}</b><br>";
+    foreach ($user->permissions as $permission) {
+        echo "{$permission->name} - {$permission->pivot->active} <br>";
+    }
+});
+
+Route::get('/many-to-many', function() {
+    // dd(Permission::create(['name' => 'menu_03']));
+
+    $user = User::with('permissions')->find(1);
+
+    // $permission = Permission::find(1);
+    // $user->permissions()->save($permission);
+    // $user->permissions()->saveMany([
+    //     Permission::find(1),
+    //     Permission::find(2),
+    //     Permission::find(3),
+    // ]);
+    // $user->permissions()->sync([2]); exclui as permissões diferentes da indicada
+    //$user->permissions()->attach([1, 3]); //inclui as permissões específicas
+    $user->permissions()->detach([1, 3]); // remove as permissões indicadas
+
+    $user->refresh();
+    
+    dd($user->permissions);
+});
 
 Route::get('/one-to-many', function () {
     //$course = Course::create(['name' => 'Curso de Laravel']);
