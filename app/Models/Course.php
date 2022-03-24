@@ -14,4 +14,8 @@ class Course extends Model
     public function modules(){
         return $this->hasMany(Module::class);
     }
+
+    public function image(){
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
