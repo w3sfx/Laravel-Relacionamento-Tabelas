@@ -5,9 +5,41 @@ use App\Models\{
     Preference,
     Course,
     Permission,
-    Image
+    Image,
+    Comment,
+    Tag
 };
 use Illuminate\Support\Facades\Route;
+
+Route::get('/many-to-many-polymorphic', function() {
+    // Tag::create(['name' => 'tag1', 'color' => 'blue']);
+    // Tag::create(['name' => 'tag2', 'color' => 'red']);
+    // Tag::create(['name' => 'tag3', 'color' => 'green']);
+
+    // $course = Course::first();
+
+    // $course->tags()->attach(2);
+
+    // dd($course->tags);
+
+    $tag = Tag::where('name', 'tag3')->first();
+    dd($tag->users);
+});
+
+Route::get('/one-to-many-polymorphic', function () {
+    //$course = Course::first();
+
+    // $course->comments()->create([
+    //     'subject' => 'Novo Comentário 2',
+    //     'content' => 'Apenas (2) um comentário legal',
+    // ]);
+
+    // dd($course->comments);
+
+    $comment = Comment::find(1);
+
+    dd($comment->commentable);
+});
 
 Route::get('/one-to-one-polymorphic', function () {
     $user = User::first();
